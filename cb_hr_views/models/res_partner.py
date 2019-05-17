@@ -58,14 +58,6 @@ class ResPartner(models.Model):
                     'Only one employee for a partner is allowed'
                 ))
 
-    @api.constrains('user_ids')
-    def _check_user(self):
-        for record in self:
-            if len(record.user_ids) > 1:
-                raise ValidationError(_(
-                    'Only one user for a partner is allowed'
-                ))
-
     def _employee_vals(self):
         return {
             'partner_id': self.id,

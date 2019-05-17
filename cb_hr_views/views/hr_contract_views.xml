@@ -13,7 +13,7 @@
                 <field name="substituting_id" attrs="{'invisible': [('substitute_contract', '!=', True)]}"/>
             </field>
             <field name="resource_calendar_id" position="attributes">
-                <attribute name="attribute">1</attribute>
+                <attribute name="invisible">1</attribute>
             </field>
             <field name="resource_calendar_id" position="after">
                 <field name="working_hours_type"/>

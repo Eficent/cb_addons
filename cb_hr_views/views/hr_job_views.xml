@@ -30,4 +30,5 @@
         parent="hr.menu_hr_root"
         sequence="91"
         groups="hr.group_hr_manager"/>
+
 </odoo>

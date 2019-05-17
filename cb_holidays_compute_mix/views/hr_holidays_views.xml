@@ -32,6 +32,9 @@
                     'invisible': [('count_in_hours', '=', False)]}
                 </attribute>
             </field>
+            <field name="holiday_status_id" position="attributes">
+                <attribute name="options">{'no_create': True, "no_open": True}</attribute>
+            </field>
             <xpath expr="//field[@name='number_of_days_temp']/.."
                    position="before">
                 <field name="count_in_hours" invisible="1"/>
@@ -52,6 +55,29 @@
             <field name="holiday_type" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_filter" model="ir.ui.view">
+        <field name="name">hr.holidays.filter</field>
+        <field name="model">hr.holidays</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="arch" type="xml">
+            <filter name="group_category" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+            <filter name="group_second_approver_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+            <filter name="todo" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+            <filter name="gray" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
+            <filter name="my_team_leaves" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </filter>
         </field>
     </record>
 

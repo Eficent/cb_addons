@@ -161,6 +161,23 @@
                ref="hr_holidays.view_hr_holidays_filter"/>
     </record>
 
+    <record model="ir.actions.act_window"
+            id="act_open_pending_employees">
+        <field name="name">Pending to Request Holidays</field>
+        <field name="res_model">hr.holidays.pending.employees</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_holidays_pending_employees_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem action="act_open_pending_employees"
+          id="menu_item_pending_employees"
+          name="Pending to Request Holidays"
+          groups="hr_holidays.group_hr_holidays_manager"
+          parent="hr_holidays.menu_hr_holidays_report"
+          sequence="4"/>
+
     <menuitem id="menu_open_all_leave_summary"
               name="All leaves"
               parent="hr_holidays.menu_hr_holidays_root"

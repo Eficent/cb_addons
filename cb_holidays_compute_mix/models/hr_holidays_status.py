@@ -10,8 +10,6 @@ from odoo.tools import float_round
 class HrHolidaysStatus(models.Model):
     _inherit = 'hr.holidays.status'
 
-    cb_personal_day = fields.Boolean(string='CB Personal Days')
-
     exclude_rest_days = fields.Boolean(
         string='Exclude Rest Days',
         help="If enabled, the employee's day off is skipped in leave days "
@@ -36,24 +34,6 @@ class HrHolidaysStatus(models.Model):
     virtual_remaining_hours = fields.Float(
         compute="_compute_user_left_hours"
     )
-
-    pending_employees_id = fields.Many2many(
-        'hr.employee',
-        string='Pending Employees',
-        compute='_compute_pending_employees',
-        readonly=1,
-    )
-
-    def _compute_pending_employees(self):
-        vals_list = []
-        employees = self.env['hr.employee'].search([])
-        for employee in employees:
-            data_days = self.get_days(employee.id)
-            result = data_days.get(self.id, {})
-            remaining_leaves = result.get('remaining_leaves', 0)
-            if remaining_leaves > 0:
-                vals_list.append(employee.id)
-        self.pending_employees_id = [(6, 0, vals_list)]
 
     @api.multi
     def get_hours(self, employee):

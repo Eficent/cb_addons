@@ -11,7 +11,6 @@
             </field>
             <field name="name" position="after">
                 <field name="count_in_hours" />
-                <field name="cb_personal_day"/>
             </field>
             <xpath expr="//field[@name='limit']" position="after">
                 <field name="exclude_rest_days"/>
@@ -54,80 +53,5 @@
             </kanban>
         </field>
     </record>
-
-     <!-- New views for hr.holidays.status to manage personal days -->
-
-    <record id="holidays_status_form_view_2" model="ir.ui.view">
-        <field name="name">hr.holidays.status.form2</field>
-        <field name="model">hr.holidays.status</field>
-        <field name="type">tree</field>
-        <field name="arch" type="xml">
-            <form string="Personal days">
-                <sheet string="Personal days">
-                    <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1>
-                            <field name="name" placeholder="Course name"
-                                   readonly="1"/>
-                        </h1>
-                    </div>
-                    <notebook>
-                        <page string="Pending Employees">
-                            <field name="pending_employees_id">
-                                <tree>
-                                    <field name="name"/>
-                                    <field name="department_id"/>
-                                    <field name="job_id"/>
-                                    <field name="parent_id"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="holidays_status_tree_view_2" model="ir.ui.view">
-        <field name="name">hr.holidays.status.tree2</field>
-        <field name="model">hr.holidays.status</field>
-        <field name="type">tree</field>
-        <field name="arch" type="xml">
-            <tree string="Personal days" create="false" delete="false">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
-    <record model="ir.actions.act_window" id="act_open_holidays_status_2">
-        <field name="name">Personal days</field>
-        <field name="res_model">hr.holidays.status</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="holidays_status_tree_view_2"/>
-        <field name="domain">[('cb_personal_day','=',True)]</field>
-    </record>
-
-    <record id="holidays_status_window_tree_2"
-            model="ir.actions.act_window.view">
-        <field name="view_mode">tree</field>
-        <field name="view_id" ref="holidays_status_tree_view_2"/>
-        <field name="act_window_id" ref="act_open_holidays_status_2"/>
-    </record>
-
-    <record id="holidays_status_window_form_2"
-            model="ir.actions.act_window.view">
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="holidays_status_form_view_2"/>
-        <field name="act_window_id" ref="act_open_holidays_status_2"/>
-    </record>
-
-    <menuitem action="act_open_holidays_status_2"
-              id="menu_item_holidays_status_2"
-              name="Manage Personal Days"
-              parent="hr_holidays.menu_hr_holidays_root"
-              sequence="4"/>
-
-
 
 </odoo>

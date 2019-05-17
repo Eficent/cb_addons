@@ -16,7 +16,9 @@ class HrHolidays(models.Model):
         return self.env['hr.employee'].search(
             [('user_id', '=', self.env.user.id)], limit=1)
 
-    employee_id = fields.Many2one(required=True)
+    employee_id = fields.Many2one(
+        required=True, default=lambda self: self._default_employee()
+    )
 
     time_description = fields.Char(
         string='Time',

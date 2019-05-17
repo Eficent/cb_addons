@@ -18,7 +18,6 @@ class HrEmployee(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         required=True,
-        readonly=True,
         store=True,
         string='Related partner'
     )
@@ -51,16 +50,20 @@ class HrEmployee(models.Model):
         readonly=True,
         copy=False
     )
-    personal_email = fields.Char(related='partner_id.email')
-    personal_phone = fields.Char(related='partner_id.mobile')
-    personal_mobile = fields.Char(related='partner_id.phone')
+    work_email = fields.Char(related='partner_id.email')
+    personal_email = fields.Char(string="Email")
+    personal_phone = fields.Char(string="Phone",
+                                 related='partner_id.mobile')
+    personal_mobile = fields.Char(related='partner_id.phone',
+                                  string="Mobile")
 
     show_info = fields.Boolean('Able to see Private Info',
                                compute='_compute_show_info')
 
     parent_id = fields.Many2one(
         related='department_id.manager_id',
-        readonly=True
+        readonly=True,
+        store=True,
     )
     company_id = fields.Many2one(
         related='contract_id.company_id',
@@ -111,6 +114,21 @@ class HrEmployee(models.Model):
     today_schedule = fields.Char(compute='_compute_today_schedule',
                                  readonly=True)
 
+    contract_id = fields.Many2one(
+        store=True
+    )
+
+    @api.depends('contract_ids')
+    def _compute_contract_id(self):
+        if self.env.context.get('execute_old_update', False):
+            return super()._compute_contract_id()
+        Contract = self.env['hr.contract']
+        for employee in self:
+            employee.contract_id = Contract.search(
+                [('employee_id', '=', employee.id), ('state', '!=', 'draft')],
+                order='date_start desc',
+                limit=1)
+
     @api.multi
     def _compute_today_schedule(self):
         public_holidays = self.env['hr.holidays.public']
@@ -138,7 +156,7 @@ class HrEmployee(models.Model):
                 continue
             if public_holidays.is_public_holiday(today, record.id):
                 record.today_schedule = _('Absent today because '
-                                          'of public holidays.')
+                                          'of public holidays')
                 continue
 
             attendances = record.resource_calendar_id._get_day_attendances(
@@ -146,8 +164,7 @@ class HrEmployee(models.Model):
             )
             if not attendances:
                 record.today_schedule = _(
-                    'This employee doesn\'t work on %s') % (
-                    day_date.strftime("%A")
+                    'This employee doesn\'t work today'
                 )
             elif len(attendances) == 1:
                 record.today_schedule = _('Working from %s to %s') % (
@@ -211,12 +228,9 @@ class HrEmployee(models.Model):
         is_officer = self.env['res.users'].has_group(
             'hr.group_hr_user')
         for employee in self:
-            if is_manager or employee.user_id == self.env.user:
-                employee.show_info = True
-            elif is_officer and employee.parent_id.user_id == self.env.user:
-                employee.show_info = True
-            else:
-                employee.show_info = False
+            employee.show_info = (
+                is_officer and employee.parent_id.user_id == self.env.user
+            ) or is_manager or employee.user_id == self.env.user
 
     @api.multi
     def _compute_is_manager(self):
@@ -227,7 +241,7 @@ class HrEmployee(models.Model):
     @api.constrains('partner_id')
     def _check_practitioner(self):
         for record in self:
-            if record.partner_id.is_practitioner:
+            if not record.partner_id.is_practitioner:
                 raise ValidationError(_(
                     'All employees must be practitioners'
                 ))
@@ -235,4 +249,4 @@ class HrEmployee(models.Model):
 
 class HrEmployeeCalendar(models.Model):
     _inherit = 'hr.employee.calendar'
-    _order = 'date_start asc'
+    _order = 'date_end desc'

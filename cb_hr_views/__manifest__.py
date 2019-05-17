@@ -25,6 +25,8 @@
         'views/resource_calendar_views.xml',
         'views/res_partner.xml',
         'security/hr_attendance_security.xml',
+        'security/ir.model.access.csv',
+        'security/hr_employee_security.xml',
         'views/hr_attendance_module_views.xml',
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',

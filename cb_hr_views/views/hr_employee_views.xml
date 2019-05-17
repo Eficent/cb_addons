@@ -164,8 +164,10 @@
         <field name="inherit_id" ref="hr.view_employee_filter"/>
         <field name="arch" type="xml">
             <field name="job_id" position="after">
-               <filter name="id_expired" string="ID Expired" domain="[('identification_id_expiration', '&lt;=', datetime.date.today().strftime('%Y-%m-%d'))]" />
+               <filter name="id_expired" string="ID Expired" groups="hr.group_hr_manager"
+                       domain="[('identification_id_expiration', '&lt;=', datetime.date.today().strftime('%Y-%m-%d'))]" />
                <separator/>
+               <field name="personal_identifier" groups="hr.group_hr_manager"/>
             </field>
         </field>
     </record>
@@ -220,6 +222,9 @@
         <field name="arch" type="xml">
             <field name="calendar_ids" position="attributes">
                 <attribute name="attrs">{'invisible': [('show_info', '=', False)]}</attribute>
+            </field>
+            <field name="calendar_id" position="attributes">
+                <attribute name="options">{'no_create': True, "no_open": True}</attribute>
             </field>
         </field>
     </record>

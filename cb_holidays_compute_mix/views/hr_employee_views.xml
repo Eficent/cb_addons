@@ -17,6 +17,9 @@
                         attrs="{'invisible': [('show_leaves','=', False)]}"
                         string="Leaves Left"/>
             </xpath>
+            <xpath expr="//field[@name='remaining_leaves']/../.." position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 

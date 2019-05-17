@@ -233,3 +233,6 @@ class TestLeaveHours(common.TransactionCase):
             self.status_2.with_context(
                 employee_id=self.employee_1.id).name_get(),
             [(self.status_2.id, 'Status 2 (0 hours remaining)')])
+
+        with self.assertRaises(ValidationError):
+            self.leave_1.write({'number_of_hours_temp': -1})

@@ -27,4 +27,13 @@
         </field>
     </record>
 
+
+    <menuitem
+        action="resource.action_resource_calendar_form"
+        id="menu_resource_calendar_tree"
+        parent="hr.menu_hr_root"
+        name="Calendars"
+        sequence="93"
+        groups="hr.group_hr_manager"/>
+
 </odoo>

@@ -97,3 +97,17 @@ class TestAllocationWizard(common.TransactionCase):
             ('state', '=', 'validate'),
         ])
         self.assertTrue(allocation)
+
+        status2 = self.env['hr.holidays.status'].create({
+            'name': 'Status 2',
+            'double_validation': True,
+            'count_in_hours': True,
+        })
+        self.wizard.write({'holiday_status_id': status2.id})
+        self.wizard.create_allocations()
+        allocation = self.env['hr.holidays'].search([
+            ('type', '=', 'add'),
+            ('holiday_status_id', '=', status2.id),
+            ('state', '=', 'validate'),
+        ])
+        self.assertTrue(allocation)

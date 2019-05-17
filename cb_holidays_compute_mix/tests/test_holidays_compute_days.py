@@ -117,3 +117,5 @@ class TestHolidaysComputeDays(common.TransactionCase):
         holidays._onchange_date_to()
         holidays._compute_time_description()
         self.assertEqual(holidays.time_description, '3.00 day(s)')
+        action = self.employee.action_view_leaves_left()
+        self.assertTrue(action)

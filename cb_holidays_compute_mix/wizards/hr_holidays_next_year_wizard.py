@@ -23,8 +23,6 @@ class HrHolidaysNextYearPublicHolidays(models.TransientModel):
         rec = super().default_get(fields_list)
         last_year = self.env['hr.holidays.public'].search(
             [], order='year desc', limit=1) or False
-        year = False
-
         if not last_year:
             raise UserError(_(
                 'No Public Holidays found as template. '
@@ -53,10 +51,6 @@ class HrHolidaysNextYearPublicHolidays(models.TransientModel):
     def create_public_holidays(self):
         last_year = self.env['hr.holidays.public'].search(
             [], order='year desc', limit=1) or False
-        if not last_year:
-            raise UserError(_(
-                'No Public Holidays found as template. '
-                'Please create the first Public Holidays manually.'))
         calendar = self.env['hr.holidays.public'].create({
             'year': self.year,
             'country_id': self.country_id.id,
