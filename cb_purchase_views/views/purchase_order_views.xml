@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchase_order_filter" model="ir.ui.view">
+        <field name="name">purchase.order.search</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="not_invoiced" position="after">
+                <filter name="nothing_to_bill" string="Nothing to bill" domain="[('invoice_status','=', 'no')]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
