@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+    Copyright 2019 Creu Blanca
+    License AGPL-3.0 or later (https://www.gnuorg/licenses/agpl.html).
+    -->
+    <report
+        id="agreement_xlsx_report"
+        model="medical.coverage.agreement"
+        string="Print to XLSX"
+        report_type="xlsx"
+        name="cb_medical_financial_coverage_agreement.agreement_xlsx"
+        file="medical_coverage_agreement"
+        attachment_use="False"
+    />
+</odoo>
