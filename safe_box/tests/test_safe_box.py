@@ -113,27 +113,9 @@ class TestSafeBox(TransactionCase):
         )
 
     def create_company(self, name):
-        company = self.env["res.company"].create(
+        return self.env["res.company"].create(
             {"name": name, "vat": 1, "currency_id": self.ref("base.USD")}
         )
-        if not company.chart_template_id:
-            wizard = self.env["wizard.multi.charts.accounts"].new(
-                {
-                    "company_id": company.id,
-                    "chart_template_id": self.chart_template_id.id,
-                    "transfer_account_id": self.chart_template_id.transfer_account_id.id,
-                    "code_digits": 6,
-                    "sale_tax_rate": 15.0,
-                    "purchase_tax_rate": 15.0,
-                    "complete_tax_set": self.chart_template_id.complete_tax_set,
-                    "currency_id": company.currency_id.id,
-                    "bank_account_code_prefix": self.chart_template_id.bank_account_code_prefix,
-                    "cash_account_code_prefix": self.chart_template_id.cash_account_code_prefix,
-                }
-            )
-            wizard.onchange_chart_template_id()
-            wizard.execute()
-        return company
 
     def test_safe_box(self):
         self.assertTrue(self.safe_box_group.account_ids)
