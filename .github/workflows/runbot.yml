@@ -1,0 +1,22 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: test Odoo
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    buildx:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v1
+            - name: Set up Docker Buildx
+              id: buildxache
+              uses: docker/setup-buildx-action@v1
+            - name: Available platformsst }}
+              run: echo ${{ steps.buildx.outputs.platforms }}
